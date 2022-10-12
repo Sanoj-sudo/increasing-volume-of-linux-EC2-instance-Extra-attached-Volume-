@@ -1,0 +1,67 @@
+If you want to increase your EBS Extra attach Volume size follow the below command for Linux.
+
+Step 1: First check the mounted volume which are present so that we can increase the volume accordingly.
+ df -h 
+ 
+Step 2: By following below command you can see all the block device on the linux machine.
+lsblk
+
+Step 3: Now check is there is file system or not on drive that you want to grow if no file system present so you need to format the drive
+        Type below command to check the filesystem.
+file -s /dev/xvdf
+
+Note:  If output is :-  /dev/xvdf: data
+
+If you got above output it means there is no file system present on the drive you need to format it as per your file system need.
+To format the drive type below command:
+
+mkfs -t xfs /dev/xvdf
+
+Note: Here "xvdf" is your attached dive name
+
+
+If your disk is alredy formated so go for below command or you have formated you can also go for below command 
+
+file -s /dev/xvdf
+
+Step 4:Now we have to mount the the drive for that we need to create a directory in which we mount the drive.
+mkdir aws
+
+Step 5: to mount type below comamnd
+mount /dev/xvdf aws
+
+Note: here aws is my directory name that i have created in case your it could be your directory name in which you 
+want to mount the drive.
+
+Step 6: Now check the drive is mounted or not type below command
+df -h 
+
+Step 7: For Parmanenet mount you have to make entry of your mounted volume in fstab.
+
+vi /etc/fstab
+
+after running above command you have to make entry as below entry 
+
+
+/dev/xvdf       /home/ec2-user/aws      ext4   defaults    0 0
+
+
+Note: 
+
+Here "/dev/xvdf   is the your device drive 
+
+/home/ec2-user/aws  is your mounted path
+
+ext4  is the file system name 
+
+and some defaults paratmetr is "defaults   0 0"
+
+
+Another way to mount drive is :
+
+sudo mkfs -t ext4 /dev/xvdf 
+mkdir aws
+sudo mount /dev/xvdf  aws
+nano /etc/fstab
+
+now put your entry as above in line number 46 i have mentioned.
